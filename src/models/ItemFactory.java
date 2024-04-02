@@ -1,11 +1,12 @@
-package Models;
+package models;
 
 public class ItemFactory
 {
 
     public static Item createItem(String type, String itemId, String name, String description, int startPrice, int currentBid, RegularUser leadingBidder, RegularUser userSeller, long bidEndTime, String categoryId, boolean isSold)
     {
-        switch (type.toLowerCase()) {
+        switch (type.toLowerCase())
+        {
             case "artcollectibles":
                 return new ItemArtCollectibles(itemId,  name,  description,  startPrice,  currentBid,  leadingBidder, userSeller,  bidEndTime,  categoryId , isSold = false);
             case "clothes":

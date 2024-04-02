@@ -1,13 +1,15 @@
-package Models;
+package models;
 
-public class Administrator implements User
+public class RegularUser implements User
 {
     private  String userId;
     private String email;
     private  String userName;
     private  String userPassword;
+    private  String creditCard;
+    private int balance;
 
-    // implementing administrator specirfic things
+    // implemeting user specific things beside credita card and balance
 
     @Override
     public String getUserId()
@@ -30,6 +32,15 @@ public class Administrator implements User
         return userPassword;
     }
 
+    public String getCreditCard()
+    {
+        return creditCard;
+    }
+
+    public int getBalance()
+    {
+        return balance;
+    }
     @Override
     public void setUserId(String userId)
     {
@@ -51,5 +62,13 @@ public class Administrator implements User
         this.userPassword = userPassword;
     }
 
+    public void setCreditCard(String creditCard)
+    {
+        this.creditCard = creditCard;
+    }
 
+    public void setBalance(int balance)
+    {
+        this.balance = balance;
+    }
 }

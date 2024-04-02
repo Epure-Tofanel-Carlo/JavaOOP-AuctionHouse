@@ -1,6 +1,6 @@
-package Models;
+package models;
 
-public class ItemClothes implements Item
+public class ItemElectronic implements Item
 {
     private  String itemId;
     private  String name;
@@ -13,14 +13,14 @@ public class ItemClothes implements Item
     private  String categoryId;
     private boolean isSold;
 
-    // nevoie de field uri specifice gen Brand, Size, Material, Condition, Sex
+    // nevoie de fielduri specifice gen Model, Producer, etc
 
 
-    public ItemClothes()
+    public ItemElectronic()
     {
     }
 
-    public ItemClothes(String itemId, String name, String description, int startPrice, int currentBid, RegularUser leadingBidder, RegularUser userSeller, long bidEndTime, String categoryId, boolean isSold)
+    public ItemElectronic(String itemId, String name, String description, int startPrice, int currentBid, RegularUser leadingBidder, RegularUser userSeller, long bidEndTime, String categoryId, boolean isSold)
     {
         this.itemId = itemId;
         this.name = name;
