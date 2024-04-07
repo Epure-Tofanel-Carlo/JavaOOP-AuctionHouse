@@ -1,0 +1,35 @@
+Actiuni/Interogari:
+
+1)Create Item
+2)View Item
+3)Delete Item
+4)Find Items by Category
+5)Search Items by Name
+6)Find Items by Price Range
+7) Create Administrator
+8) Create Regular User
+9) View Administrator
+10) View Regular User
+11) Delete Administrator
+12) Delete Regular User
+13) List All Administrators
+14) List All Regular Users
+15) View Category
+16) Delete Category
+17) List All Categories
+
+Obiecte:
+
+Administrator
+RegularUser
+User (+ dao, repository, service layer)
+ItemArtCollectibles
+ItemClothes
+ItemElectronic
+ItemFactory
+Item (+ dao, repository, service layer)
+Category (+ dao, repository, service layer)
+MenuAdministrator
+
+
+
