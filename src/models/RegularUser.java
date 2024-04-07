@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
 public class RegularUser implements User
 {
     private  String userId;
@@ -8,8 +10,23 @@ public class RegularUser implements User
     private  String userPassword;
     private  String creditCard;
     private int balance;
+    private List<Bid> bids;
 
-    // implemeting user specific things beside credita card and balance
+
+    public RegularUser()
+    {
+    }
+
+    public RegularUser(String userId, String email, String userName, String userPassword, String creditCard, int balance)
+    {
+        this.userId = userId;
+        this.email = email;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.creditCard = creditCard;
+        this.balance = balance;
+        this.bids = null;
+    }
 
     @Override
     public String getUserId()
@@ -41,6 +58,10 @@ public class RegularUser implements User
     {
         return balance;
     }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
     @Override
     public void setUserId(String userId)
     {
@@ -70,5 +91,21 @@ public class RegularUser implements User
     public void setBalance(int balance)
     {
         this.balance = balance;
+    }
+    public void addBid(Bid bid) {
+        bids.add(bid);
+    }
+
+    @Override
+    public String toString() {
+        return "RegularUser{" +
+                "userId='" + userId + '\'' +
+                ", email='" + email + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userPassword='" + userPassword + '\'' +
+                ", creditCard='" + creditCard + '\'' +
+                ", balance=" + balance +
+                ", bids=" + bids +
+                '}';
     }
 }

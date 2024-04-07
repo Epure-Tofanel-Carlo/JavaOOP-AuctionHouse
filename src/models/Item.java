@@ -29,8 +29,6 @@ public interface Item
     void setCategoryId(String categoryId);
     void setIsSold(boolean isSold);
 
-    
-    
-    
+
     
 }

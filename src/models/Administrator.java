@@ -7,7 +7,17 @@ public class Administrator implements User
     private  String userName;
     private  String userPassword;
 
-    // implementing administrator specirfic things
+    public Administrator()
+    {
+    }
+
+    public Administrator(String userId, String email, String userName, String userPassword)
+    {
+        this.userId = userId;
+        this.email = email;
+        this.userName = userName;
+        this.userPassword = userPassword;
+    }
 
     @Override
     public String getUserId()

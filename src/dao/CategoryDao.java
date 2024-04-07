@@ -8,29 +8,25 @@ public class CategoryDao {
 
     private static List<Category> categoryList = new ArrayList<>();
 
-    public void createCategory(Category category) {
-        if (category == null) {
-            throw new IllegalArgumentException("Category cannot be null");
-        }
+    public void createCategory(Category category)
+    {
         categoryList.add(category);
     }
 
-    public Category readCategoryById(String categoryId) {
-        if (categoryId == null) {
-            throw new IllegalArgumentException("Category ID cannot be null");
-        }
-        for (Category category : categoryList) {
-            if (category.getCategoryId().equals(categoryId)) {
+    public Category readCategoryById(String categoryId)
+    {
+        for (Category category : categoryList)
+        {
+            if (category.getCategoryId().equals(categoryId))
+            {
                 return category;
             }
         }
         return null;
     }
 
-    public void removeCategory(Category category) {
-        if (category == null || !categoryList.contains(category)) {
-            throw new IllegalArgumentException("Category not found or is null");
-        }
+    public void removeCategory(Category category)
+    {
         categoryList.remove(category);
     }
 

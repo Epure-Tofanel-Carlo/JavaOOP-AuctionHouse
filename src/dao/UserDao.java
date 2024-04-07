@@ -11,48 +11,55 @@ public class UserDao {
     private Map<String, Administrator> administratorMap = new HashMap<>();
     private Map<String, RegularUser> regularUserMap = new HashMap<>();
 
-    public void createAdministrator(Administrator admin) {
-        if (admin == null || admin.getUserId() == null) {
-            throw new IllegalArgumentException("Administrator or ID cannot be null");
-        }
-        if (administratorMap.containsKey(admin.getUserId())) {
-            throw new IllegalArgumentException("Administrator with this ID already exists");
-        }
+    public void createAdministrator(Administrator admin)
+    {
         administratorMap.put(admin.getUserId(), admin);
     }
 
-    public Administrator readAdministratorById(String adminId) {
+    public Administrator readAdministratorById(String adminId)
+    {
         return administratorMap.get(adminId);
     }
 
-    public void removeAdministrator(String adminId) {
+    public void removeAdministrator(String adminId)
+    {
         administratorMap.remove(adminId);
     }
 
-    public void createRegularUser(RegularUser user) {
-        if (user == null || user.getUserId() == null) {
-            throw new IllegalArgumentException("RegularUser or ID cannot be null");
-        }
-        if (regularUserMap.containsKey(user.getUserId())) {
-            throw new IllegalArgumentException("RegularUser with this ID already exists");
-        }
+    public void createRegularUser(RegularUser user)
+    {
         regularUserMap.put(user.getUserId(), user);
     }
 
-    public RegularUser readRegularUserById(String userId) {
+    public RegularUser readRegularUserById(String userId)
+    {
         return regularUserMap.get(userId);
     }
 
-    public void removeRegularUser(String userId) {
+    public RegularUser readRegularUserByName(String userName)
+    {
+        for (RegularUser user : regularUserMap.values())
+        {
+            if (user.getUserName().equalsIgnoreCase(userName))
+            {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public void removeRegularUser(String userId)
+    {
         regularUserMap.remove(userId);
     }
 
-    // Methods to return all administrators and regular users
-    public Map<String, Administrator> getAllAdministrators() {
+    public Map<String, Administrator> getAllAdministrators()
+    {
         return new HashMap<>(administratorMap);
     }
 
-    public Map<String, RegularUser> getAllRegularUsers() {
+    public Map<String, RegularUser> getAllRegularUsers()
+    {
         return new HashMap<>(regularUserMap);
     }
 }

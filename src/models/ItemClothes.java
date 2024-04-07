@@ -156,4 +156,20 @@ public class ItemClothes implements Item
     {
         isSold = sold;
     }
+
+    @Override
+    public String toString() {
+        return "ItemArtCollectibles {" +
+                "itemId=" + itemId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", startPrice=" + startPrice +
+                ", currentBid=" + currentBid +
+                ", leadingBidder=" + (leadingBidder != null ? leadingBidder.getUserName() : "None") +
+                ", userSeller=" + (userSeller != null ? userSeller.getUserName() : "None") +
+                ", bidEndTime=" + bidEndTime +
+                ", categoryId='" + categoryId + '\'' +
+                ", isSold=" + isSold +
+                '}';
+    }
 }
