@@ -56,7 +56,7 @@ public class UserService
         System.out.println("Password:");
         String password = scanner.nextLine();
 
-        RegularUser user = new RegularUser(); // Adjust if constructor parameters are different
+        RegularUser user = new RegularUser();
         user.setUserId(id);
         user.setEmail(email);
         user.setUserName(username);
@@ -210,7 +210,7 @@ public class UserService
                     listAllRegularUsers();
                     break;
                 case "9":
-                    return; // return
+                    return;
                 default:
                     System.out.println("Invalid option please try again");
             }

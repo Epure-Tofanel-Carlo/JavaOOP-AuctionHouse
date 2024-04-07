@@ -4,7 +4,8 @@ import models.Category;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryDao {
+public class CategoryDao
+{
 
     private static List<Category> categoryList = new ArrayList<>();
 

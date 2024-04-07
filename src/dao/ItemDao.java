@@ -17,13 +17,17 @@ public class ItemDao
      private static List<ItemArtCollectibles> itemArtCollectiblesList = new ArrayList<>();
 
 
-     public void createItem(Item item) {
+     public void createItem(Item item)
+     {
 
-          if (item instanceof ItemElectronic) {
+          if (item instanceof ItemElectronic)
+          {
                itemElectronicList.add((ItemElectronic) item);
-          } else if (item instanceof ItemClothes) {
+          } else if (item instanceof ItemClothes)
+          {
                itemClothesList.add((ItemClothes) item);
-          } else if (item instanceof ItemArtCollectibles) {
+          } else if (item instanceof ItemArtCollectibles)
+          {
                itemArtCollectiblesList.add((ItemArtCollectibles) item);
           } else {
                throw new IllegalArgumentException("Unsupported item type");
@@ -64,21 +68,28 @@ public class ItemDao
      }
 
 
-     public Item readItemById(UUID itemId) {
-          for (ItemElectronic item : itemElectronicList) {
-               if (item.getItemId().equals(itemId)) {
+     public Item readItemById(UUID itemId)
+     {
+          for (ItemElectronic item : itemElectronicList)
+          {
+               if (item.getItemId().equals(itemId))
+               {
                     return item;
                }
           }
 
-          for (ItemClothes item : itemClothesList) {
-               if (item.getItemId().equals(itemId)) {
+          for (ItemClothes item : itemClothesList)
+          {
+               if (item.getItemId().equals(itemId))
+               {
                     return item;
                }
           }
 
-          for (ItemArtCollectibles item : itemArtCollectiblesList) {
-               if (item.getItemId().equals(itemId)) {
+          for (ItemArtCollectibles item : itemArtCollectiblesList)
+          {
+               if (item.getItemId().equals(itemId))
+               {
                     return item;
                }
           }
@@ -88,27 +99,36 @@ public class ItemDao
 
 
 
-     public ItemElectronic readItemElectronicById(UUID itemId) {
-          for (ItemElectronic item : itemElectronicList) {
-               if (item.getItemId().equals(itemId)) {
+     public ItemElectronic readItemElectronicById(UUID itemId)
+     {
+          for (ItemElectronic item : itemElectronicList)
+          {
+               if (item.getItemId().equals(itemId))
+               {
                     return item;
                }
           }
           return null;
      }
 
-     public ItemClothes readItemClothesById(UUID itemId) {
-          for (ItemClothes item : itemClothesList) {
-               if (item.getItemId().equals(itemId)) {
+     public ItemClothes readItemClothesById(UUID itemId)
+     {
+          for (ItemClothes item : itemClothesList)
+          {
+               if (item.getItemId().equals(itemId))
+               {
                     return item;
                }
           }
           return null;
      }
 
-     public ItemArtCollectibles readItemArtCollectiblesById(UUID itemId) {
-          for (ItemArtCollectibles item : itemArtCollectiblesList) {
-               if (item.getItemId().equals(itemId)) {
+     public ItemArtCollectibles readItemArtCollectiblesById(UUID itemId)
+     {
+          for (ItemArtCollectibles item : itemArtCollectiblesList)
+          {
+               if (item.getItemId().equals(itemId))
+               {
                     return item;
                }
           }
@@ -127,7 +147,8 @@ public class ItemDao
           return new ArrayList<>(itemClothesList);
      }
 
-     public List<Item> getAllItems() {
+     public List<Item> getAllItems()
+     {
      List<Item> allItems = new ArrayList<>();
      allItems.addAll(itemElectronicList);
      allItems.addAll(itemClothesList);

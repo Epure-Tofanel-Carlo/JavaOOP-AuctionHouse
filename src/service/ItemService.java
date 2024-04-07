@@ -126,7 +126,7 @@ public class ItemService {
                     findItemsByPriceRange(scanner);
                     break;
                 case "7":
-                    return; // Return to Main Menu
+                    return;
                 default:
                     System.out.println("Invalid option. Please try again.");
             }
