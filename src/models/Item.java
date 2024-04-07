@@ -1,9 +1,11 @@
 package models;
 
+import java.util.UUID;
+
 public interface Item
 {
 
-    String getItemId();
+    UUID getItemId();
     String getName();
     String getDescription();
     int getStartPrice();
@@ -16,7 +18,7 @@ public interface Item
 
 
 
-    void setItemId(String itemId);
+    void setItemId(UUID itemId);
     void setName(String name);
     void setDescription(String description);
     void setStartPrice(int startPrice);

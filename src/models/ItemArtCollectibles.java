@@ -1,8 +1,10 @@
 package models;
 
+import java.util.UUID;
+
 public class ItemArtCollectibles implements Item
 {
-    private  String itemId;
+    private UUID itemId;
     private  String name;
     private  String description;
     private  int startPrice;
@@ -18,11 +20,12 @@ public class ItemArtCollectibles implements Item
 
     public ItemArtCollectibles()
     {
+        this.itemId = UUID.randomUUID();
     }
 
-    public ItemArtCollectibles(String itemId, String name, String description, int startPrice, int currentBid, RegularUser leadingBidder, RegularUser userSeller, long bidEndTime, String categoryId, boolean isSold)
+    public ItemArtCollectibles(String name, String description, int startPrice, int currentBid, RegularUser leadingBidder, RegularUser userSeller, long bidEndTime, String categoryId, boolean isSold)
     {
-        this.itemId = itemId;
+        this.itemId = UUID.randomUUID();
         this.name = name;
         this.description = description;
         this.startPrice = startPrice;
@@ -35,7 +38,7 @@ public class ItemArtCollectibles implements Item
     }
 
     @Override
-    public String getItemId()
+    public UUID getItemId()
     {
         return itemId;
     }
@@ -95,7 +98,7 @@ public class ItemArtCollectibles implements Item
     }
 
     @Override
-    public void setItemId(String itemId)
+    public void setItemId(UUID itemId)
     {
         this.itemId = itemId;
     }
