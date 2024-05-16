@@ -9,12 +9,16 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
+
+
 public class ItemService {
     private ItemRepositoryService itemRepositoryService;
+    private UserService userService;
 
-    public ItemService() {
+    public ItemService(UserService userService) {
         try {
             this.itemRepositoryService = new ItemRepositoryService();
+            this.userService = userService;
         } catch (RuntimeException e) {
             System.out.println("Error creating ItemRepositoryService: " + e.getMessage());
         }
@@ -45,28 +49,12 @@ public class ItemService {
 
         int currentBid = 0;
         RegularUser leadingBidder = null;
-        RegularUser userSeller = null;
-
-        System.out.println("Enter seller's username or ID:");
-        String sellerInput = scanner.nextLine();
-        try {
-
-            UserRepositoryService userRepositoryService = new UserRepositoryService();
-            userSeller = (RegularUser) userRepositoryService.readUserByName(sellerInput);
-            if (userSeller == null)
-            {
-                userSeller = (RegularUser) userRepositoryService.readUserById(sellerInput);
-                if (userSeller == null)
-                {
-                    System.out.println("Seller not found. Item creation canceled.");
-                    return;
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Error retrieving seller: " + e.getMessage());
+        RegularUser userSeller = userService.getCurrentUser();
+        if (userSeller == null) {
+            System.out.println("You need to log in first to create an item.");
             return;
         }
-        long bidEndTime = System.currentTimeMillis();
+        long bidEndTime = System.currentTimeMillis() + (24 * 60 * 60 * 1000);
         System.out.println("Enter category ID:");
         String categoryId = scanner.nextLine();
 

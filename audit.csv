@@ -1,0 +1,55 @@
+Tried to read user but got null,2024-05-16 20:37:37
+Tried to read user but got null,2024-05-16 20:37:57
+Read regular user by id,2024-05-16 20:38:07
+Read a category but got null,2024-05-16 20:39:17
+Added a category to database,2024-05-16 20:39:17
+Read a category but got null,2024-05-16 20:39:38
+Added a category to database,2024-05-16 20:39:38
+Fetched bids by user Id,2024-05-16 20:39:49
+Fetched all items,2024-05-16 20:39:52
+Added item clothes to database,2024-05-16 20:40:31
+Read regular user by id,2024-05-16 20:41:07
+Read regular user,2024-05-16 20:41:10
+Fetched UserFromDatabase,2024-05-16 20:41:10
+Fetched all items,2024-05-16 20:41:10
+Fetched bids by user Id,2024-05-16 20:41:12
+Read regular user,2024-05-16 20:41:29
+Read regular user,2024-05-16 20:41:29
+Fetched UserFromDatabase,2024-05-16 20:41:29
+Added a Bid to database,2024-05-16 20:41:29
+Placed a bid,2024-05-16 20:41:29
+Updated user,2024-05-16 20:41:29
+Read regular user,2024-05-16 20:41:42
+Fetched user from database for bid,2024-05-16 20:41:42
+Fetched item from database for Bid,2024-05-16 20:41:42
+Read regular user,2024-05-16 20:41:42
+Fetched UserFromDatabase,2024-05-16 20:41:42
+Fetched bid,2024-05-16 20:41:42
+Fetched bids by user Id,2024-05-16 20:41:42
+Read regular user,2024-05-16 20:41:50
+Fetched UserFromDatabase,2024-05-16 20:41:50
+Fetched all items,2024-05-16 20:41:50
+Read user by id but got null,2024-05-16 20:42:13
+Read regular user,2024-05-16 20:42:37
+Fetched UserFromDatabase,2024-05-16 20:42:37
+Read regular user,2024-05-16 20:42:37
+Fetched UserFromDatabase,2024-05-16 20:42:37
+Fetched a bid,2024-05-16 20:42:37
+Fetched bids for a certain item,2024-05-16 20:42:37
+Fetched bids for a certain item,2024-05-16 20:42:50
+Got the highest bid,2024-05-16 20:42:50
+Read regular user,2024-05-16 20:43:10
+Fetched UserFromDatabase,2024-05-16 20:43:10
+Fetched all items,2024-05-16 20:43:10
+Read regular user,2024-05-16 20:43:17
+Fetched UserFromDatabase,2024-05-16 20:43:17
+Fetched all items,2024-05-16 20:43:17
+Read regular user,2024-05-16 20:43:31
+Fetched UserFromDatabase,2024-05-16 20:43:31
+Fetched all items,2024-05-16 20:43:31
+Read regular user,2024-05-16 20:43:36
+Fetched UserFromDatabase,2024-05-16 20:43:36
+Fetched all items,2024-05-16 20:43:36
+Read regular user,2024-05-16 20:43:38
+Fetched UserFromDatabase,2024-05-16 20:43:38
+Fetched all items,2024-05-16 20:43:38

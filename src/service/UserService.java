@@ -23,9 +23,6 @@ public class UserService {
     }
 
     public void createUser(Scanner scanner) {
-        System.out.println("Enter user type (admin/regular):");
-        String userType = scanner.nextLine();
-
         System.out.println("Enter email:");
         String email = scanner.nextLine();
         System.out.println("Enter username:");
@@ -33,27 +30,19 @@ public class UserService {
         System.out.println("Enter password:");
         String password = scanner.nextLine();
 
-        User user;
-        if (userType.equalsIgnoreCase("admin")) {
-            user = new Administrator();
-        } else if (userType.equalsIgnoreCase("regular")) {
-            System.out.println("Enter credit card:");
-            String creditCard = scanner.nextLine();
-            System.out.println("Enter balance:");
-            int balance = scanner.nextInt();
-            scanner.nextLine(); // omor newline u
-
-            user = new RegularUser();
-            ((RegularUser) user).setCreditCard(creditCard);
-            ((RegularUser) user).setBalance(balance);
-        } else {
-            System.out.println("Invalid user type.");
-            return;
-        }
-
+        RegularUser user = new RegularUser();
         user.setEmail(email);
         user.setUserName(username);
         user.setUserPassword(password);
+
+        System.out.println("Enter credit card:");
+        String creditCard = scanner.nextLine();
+        System.out.println("Enter balance:");
+        int balance = scanner.nextInt();
+        scanner.nextLine();
+
+        user.setCreditCard(creditCard);
+        user.setBalance(balance);
 
         try {
             userRepositoryService.createUser(user);
@@ -174,6 +163,20 @@ public class UserService {
     public RegularUser getCurrentUser() {
         return currentUser;
     }
+
+    public void addBalance(String userId, double amount) throws SQLException {
+        User user = userRepositoryService.readUserById(userId);
+        if (user instanceof RegularUser) {
+            RegularUser regularUser = (RegularUser) user;
+            double newBalance = regularUser.getBalance() + amount;
+            regularUser.setBalance((int) newBalance);
+            userRepositoryService.updateUser(regularUser);
+            System.out.println("Balance updated successfully. New balance: " + newBalance);
+        } else {
+            System.out.println("Invalid user type. Cannot add balance.");
+        }
+    }
+
 
 
 

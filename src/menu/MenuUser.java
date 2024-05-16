@@ -2,6 +2,7 @@ package menu;
 import daoservices.ItemRepositoryService;
 import daoservices.UserRepositoryService;
 import models.Bid;
+import models.Item;
 import models.RegularUser;
 import service.BidService;
 import service.ItemService;
@@ -12,10 +13,15 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MenuUser {
-    private static UserService userService = new UserService();
-    private static ItemService itemService = new ItemService();
+    private static UserService userService;
+    private static ItemService itemService;
     private static BidService bidService;
 
+    public MenuUser() {
+        userService = new UserService();
+        itemService = new ItemService(userService);
+        bidService = new BidService(new ItemRepositoryService(), new UserRepositoryService());
+    }
     public static void menuUser(Scanner scanner) {
         System.out.println("User Menu");
         while (true) {
@@ -25,11 +31,16 @@ public class MenuUser {
                     "\n3) Create Item" +
                     "\n4) Place Bid" +
                     "\n5) View My Bids" +
-                    "\n6) Exit");
+                    "\n6) View All Items" +
+                    "\n7) Exit");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    userService.createUser(scanner);
+                    if (userService.getCurrentUser() == null) {
+                        userService.createUser(scanner);
+                    } else {
+                        System.out.println("Invalid option. Please try again.");
+                    }
                     break;
                 case "2":
                     RegularUser user = login(scanner);
@@ -47,6 +58,9 @@ public class MenuUser {
                     viewMyBids(scanner);
                     break;
                 case "6":
+                    itemService.viewAllItems();
+                    break;
+                case "7":
                     return;
                 default:
                     System.out.println("Invalid option, please try again");
@@ -77,8 +91,10 @@ public class MenuUser {
         try {
             bidService.placeBid(userService.getCurrentUser().getUserId(), itemId, bidAmount);
             System.out.println("Bid placed successfully.");
-        } catch (SQLException | IllegalArgumentException e) {
-            System.out.println("Error placing bid: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Database error occurred while placing the bid: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid input: " + e.getMessage());
         }
     }
 
@@ -99,7 +115,25 @@ public class MenuUser {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error retrieving bids: " + e.getMessage());
+            System.out.println("Database error occurred while retrieving your bids: " + e.getMessage());
         }
     }
+
+    private static void addBalance(Scanner scanner) {
+        if (userService.getCurrentUser() == null) {
+            System.out.println("You need to log in first to add balance.");
+            return;
+        }
+
+        System.out.println("Enter the amount to add:");
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
+
+        try {
+            userService.addBalance(userService.getCurrentUser().getUserId(), amount);
+        } catch (SQLException e) {
+            System.out.println("Error adding balance: " + e.getMessage());
+        }
+    }
+
 }

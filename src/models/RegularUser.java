@@ -15,17 +15,17 @@ public class RegularUser implements User
 
     public RegularUser()
     {
+        this.bids = new ArrayList<>();
     }
 
-    public RegularUser(String userId, String email, String userName, String userPassword, String creditCard, int balance)
-    {
+    public RegularUser(String userId, String email, String userName, String userPassword, String creditCard, int balance) {
         this.userId = userId;
         this.email = email;
         this.userName = userName;
         this.userPassword = userPassword;
         this.creditCard = creditCard;
         this.balance = balance;
-        this.bids = null;
+        this.bids = new ArrayList<>();
     }
 
     @Override

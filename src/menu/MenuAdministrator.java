@@ -14,11 +14,17 @@ import java.util.Scanner;
 import java.util.UUID;
 
 public class MenuAdministrator {
-    private static UserService userService = new UserService();
-    private static ItemService itemService = new ItemService();
-    private static CategoryService categoryService = new CategoryService();
+    private static UserService userService;
+    private static ItemService itemService;
     private static BidService bidService;
+    private static CategoryService categoryService;
 
+    public MenuAdministrator() {
+        userService = new UserService();
+        itemService = new ItemService(userService);
+        bidService = new BidService(new ItemRepositoryService(), new UserRepositoryService());
+        categoryService = new CategoryService();
+    }
     public static void menuAdministrator(Scanner scanner) {
         System.out.println("Administrator Menu");
         while (true) {
@@ -85,8 +91,10 @@ public class MenuAdministrator {
                     System.out.println(bid);
                 }
             }
-        } catch (SQLException | IllegalArgumentException e) {
-            System.out.println("Error retrieving bids: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Database error occurred while retrieving bids: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid input: " + e.getMessage());
         }
     }
 
@@ -102,8 +110,10 @@ public class MenuAdministrator {
                 System.out.println("Highest Bid for Item " + itemIdString + ":");
                 System.out.println(highestBid);
             }
-        } catch (SQLException | IllegalArgumentException e) {
-            System.out.println("Error retrieving highest bid: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Database error occurred while retrieving the highest bid: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid input: " + e.getMessage());
         }
     }
 }

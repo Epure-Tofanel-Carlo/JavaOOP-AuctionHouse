@@ -22,6 +22,7 @@ public class CategoryDao implements DaoInterface<Category> {
             statement.setString(3, category.getDescription());
             statement.executeUpdate();
         }
+        AuditService.logAction("Added a category to database");
     }
 
     @Override
@@ -30,12 +31,15 @@ public class CategoryDao implements DaoInterface<Category> {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, categoryId);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            if (resultSet.next())
+            {
                 String name = resultSet.getString("name");
                 String description = resultSet.getString("description");
+                AuditService.logAction("Read an category by id cred");
                 return new Category(categoryId, name, description);
             }
         }
+        AuditService.logAction("Read a category but got null");
         return null;
     }
 
@@ -46,6 +50,7 @@ public class CategoryDao implements DaoInterface<Category> {
             statement.setString(1, category.getCategoryId());
             statement.executeUpdate();
         }
+        AuditService.logAction("Deleted a category");
     }
 
     @Override
@@ -57,6 +62,7 @@ public class CategoryDao implements DaoInterface<Category> {
             statement.setString(3, category.getCategoryId());
             statement.executeUpdate();
         }
+        AuditService.logAction("Updated a category");
     }
 
     public List<Category> getAllCategories() throws SQLException {
@@ -70,6 +76,7 @@ public class CategoryDao implements DaoInterface<Category> {
                 String description = resultSet.getString("description");
                 categories.add(new Category(categoryId, name, description));
             }
+            AuditService.logAction("Fetched all categories");
             return categories;
         }
     }

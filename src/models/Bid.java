@@ -1,6 +1,7 @@
 package models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class Bid {
@@ -11,6 +12,9 @@ public class Bid {
     private Item item;
 
     public Bid(double bidAmount, RegularUser bidder, Item item) {
+        if (bidder == null || item == null) {
+            throw new IllegalArgumentException("Bidder and item cannot be null");
+        }
         this.bidId = UUID.randomUUID();
         this.bidAmount = bidAmount;
         this.bidTime = LocalDateTime.now();
@@ -66,5 +70,17 @@ public class Bid {
     public void setItem(Item item)
     {
         this.item = item;
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return "Bid{" +
+                "bidId=" + bidId +
+                ", bidAmount=" + bidAmount +
+                ", bidTime=" + bidTime.format(formatter) +
+                ", bidder=" + bidder.getUserName() +
+                ", item=" + item.getName() +
+                '}';
     }
 }

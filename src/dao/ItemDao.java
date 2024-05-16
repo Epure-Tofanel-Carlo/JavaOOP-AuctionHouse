@@ -20,8 +20,8 @@ public class ItemDao implements DaoInterface<Item> {
 
      @Override
      public void add(Item item) throws SQLException {
-          String sql = "INSERT INTO items (item_id, name, description, start_price, current_bid, bid_end_time, is_sold, seller_id, category_id) " +
-                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+          String sql = "INSERT INTO items (item_id, name, description, start_price, current_bid, bid_end_time, is_sold, seller_id, category_id, item_type) " +
+                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
           try (PreparedStatement statement = connection.prepareStatement(sql)) {
                statement.setString(1, item.getItemId().toString());
                statement.setString(2, item.getName());
@@ -36,6 +36,7 @@ public class ItemDao implements DaoInterface<Item> {
                     statement.setNull(8, Types.VARCHAR);
                }
                statement.setString(9, item.getCategoryId());
+               statement.setString(10, getItemType(item));
                statement.executeUpdate();
                if (item instanceof ItemArtCollectibles) {
                     addItemArtCollectibles((ItemArtCollectibles) item);
@@ -46,7 +47,6 @@ public class ItemDao implements DaoInterface<Item> {
                }
           }
      }
-
      private void addItemArtCollectibles(ItemArtCollectibles item) throws SQLException {
           String sql = "INSERT INTO item_art_collectibles (item_id, artist, medium, dimensions, year) VALUES (?, ?, ?, ?, ?)";
           try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -57,6 +57,7 @@ public class ItemDao implements DaoInterface<Item> {
                statement.setInt(5, item.getYear());
                statement.executeUpdate();
           }
+          AuditService.logAction("Added item art collectibles to database");
      }
 
      private void addItemClothes(ItemClothes item) throws SQLException {
@@ -71,6 +72,7 @@ public class ItemDao implements DaoInterface<Item> {
                statement.setString(7, item.getSex());
                statement.executeUpdate();
           }
+          AuditService.logAction("Added item clothes to database");
      }
 
      private void addItemElectronic(ItemElectronic item) throws SQLException {
@@ -84,6 +86,7 @@ public class ItemDao implements DaoInterface<Item> {
                statement.setInt(6, item.getManufactureYear());
                statement.executeUpdate();
           }
+          AuditService.logAction("Added item electronic to database");
      }
 
      @Override
@@ -93,35 +96,38 @@ public class ItemDao implements DaoInterface<Item> {
                statement.setString(1, itemId);
                ResultSet resultSet = statement.executeQuery();
                if (resultSet.next()) {
-                    return createItemFromResultSet(resultSet);
+                    String itemType = resultSet.getString("item_type");
+                    return createItemFromResultSet(resultSet, itemType);
                }
           }
+          AuditService.logAction("Read an item from database");
           return null;
      }
 
-     private Item createItemFromResultSet(ResultSet resultSet) throws SQLException {
-          String itemType = getItemType(resultSet.getString("item_id"));
-          Item item;
-          if (itemType.equals("unknown")) {
-               // dau skip la ce e unknown, doamne sper sa nu regret
-               return null;
-          } else if (itemType.equals("art_collectibles")) {
+
+     private Item createItemFromResultSet(ResultSet resultSet, String itemType) throws SQLException {
+          Item item = null;
+          if (itemType.equalsIgnoreCase("artcollectibles")) {
                item = createItemArtCollectiblesFromResultSet(resultSet);
-          } else if (itemType.equals("clothes")) {
+          } else if (itemType.equalsIgnoreCase("clothes")) {
                item = createItemClothesFromResultSet(resultSet);
-          } else if (itemType.equals("electronics")) {
+          } else if (itemType.equalsIgnoreCase("electronics")) {
                item = createItemElectronicFromResultSet(resultSet);
-          } else {
-               throw new IllegalArgumentException("Unknown item type");
           }
-          item.setItemId(UUID.fromString(resultSet.getString("item_id")));
-          item.setName(resultSet.getString("name"));
-          item.setDescription(resultSet.getString("description"));
-          item.setStartPrice(resultSet.getInt("start_price"));
-          item.setCurrentBid(resultSet.getInt("current_bid"));
-          item.setBidEndTime(resultSet.getTimestamp("bid_end_time").getTime());
-          item.setIsSold(resultSet.getBoolean("is_sold"));
-          item.setCategoryId(resultSet.getString("category_id"));
+          if (item != null) {
+               item.setItemId(UUID.fromString(resultSet.getString("item_id")));
+               item.setName(resultSet.getString("name"));
+               item.setDescription(resultSet.getString("description"));
+               item.setStartPrice(resultSet.getInt("start_price"));
+               item.setCurrentBid(resultSet.getInt("current_bid"));
+               item.setBidEndTime(resultSet.getTimestamp("bid_end_time").getTime());
+               item.setIsSold(resultSet.getBoolean("is_sold"));
+               item.setCategoryId(resultSet.getString("category_id"));
+               String sellerId = resultSet.getString("seller_id");
+               RegularUser seller = fetchUserFromDatabase(sellerId);
+               item.setUserSeller(seller);
+          }
+
           return item;
      }
 
@@ -134,11 +140,21 @@ public class ItemDao implements DaoInterface<Item> {
           item.setCurrentBid(resultSet.getInt("current_bid"));
           item.setBidEndTime(resultSet.getTimestamp("bid_end_time").getTime());
           item.setIsSold(resultSet.getBoolean("is_sold"));
-          String artistValue = resultSet.getString("artist");
-          item.setArtist(artistValue != null ? artistValue : "");
-          item.setMedium(resultSet.getString("medium"));
-          item.setDimensions(resultSet.getString("dimensions"));
-          item.setYear(resultSet.getInt("year"));
+
+          String itemId = resultSet.getString("item_id");
+          String sql = "SELECT artist, medium, dimensions, year FROM item_art_collectibles WHERE item_id = ?";
+          try (PreparedStatement statement = connection.prepareStatement(sql)) {
+               statement.setString(1, itemId);
+               ResultSet artResultSet = statement.executeQuery();
+               if (artResultSet.next()) {
+                    String artistValue = artResultSet.getString("artist");
+                    item.setArtist(artistValue != null ? artistValue : "");
+                    item.setMedium(artResultSet.getString("medium"));
+                    item.setDimensions(artResultSet.getString("dimensions"));
+                    item.setYear(artResultSet.getInt("year"));
+               }
+          }
+
           return item;
      }
 
@@ -165,6 +181,7 @@ public class ItemDao implements DaoInterface<Item> {
                     item.setSex(clothesResultSet.getString("sex"));
                }
           }
+
           return item;
      }
 
@@ -190,22 +207,18 @@ public class ItemDao implements DaoInterface<Item> {
                     item.setManufactureYear(electronicsResultSet.getInt("manufacture_year"));
                }
           }
+
           return item;
      }
-     private String getItemType(String itemId) throws SQLException {
-          String[] tables = {"item_art_collectibles", "item_clothes", "item_electronics"};
-          for (String table : tables) {
-               String sql = "SELECT * FROM " + table + " WHERE item_id = ?";
-               try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                    statement.setString(1, itemId);
-                    ResultSet resultSet = statement.executeQuery();
-                    if (resultSet.next()) {
-                         return table.substring(5); //  scot "item_" prefix
-                    }
-               }
+     private String getItemType(Item item) {
+          if (item instanceof ItemArtCollectibles) {
+               return "artcollectibles";
+          } else if (item instanceof ItemClothes) {
+               return "clothes";
+          } else if (item instanceof ItemElectronic) {
+               return "electronics";
           }
-          // daca nu fac asta da crash la get all items, sper sa nu regret ca am adaugat unknown in loc sa tratez eroarea
-          return "unknown";
+          return "";
      }
 
      @Override
@@ -222,6 +235,7 @@ public class ItemDao implements DaoInterface<Item> {
                statement.setString(7, item.getItemId().toString());
                statement.executeUpdate();
           }
+          AuditService.logAction("Updated one Item");
      }
 
      @Override
@@ -231,6 +245,7 @@ public class ItemDao implements DaoInterface<Item> {
                statement.setString(1, item.getItemId().toString());
                statement.executeUpdate();
           }
+          AuditService.logAction("Deleted one item");
      }
 
      public List<Item> getAllItems() throws SQLException {
@@ -239,12 +254,14 @@ public class ItemDao implements DaoInterface<Item> {
           try (PreparedStatement statement = connection.prepareStatement(sql)) {
                ResultSet resultSet = statement.executeQuery();
                while (resultSet.next()) {
-                    Item item = createItemFromResultSet(resultSet);
+                    String itemType = resultSet.getString("item_type");
+                    Item item = createItemFromResultSet(resultSet, itemType);
                     if (item != null) {
                          items.add(item);
                     }
                }
           }
+          AuditService.logAction("Fetched all items");
           return items;
      }
 
@@ -252,11 +269,12 @@ public class ItemDao implements DaoInterface<Item> {
           bidDao.add(bid);
 
           if (bid.getBidAmount() > item.getCurrentBid()) {
-               String sql = "UPDATE items SET current_bid = ?, is_sold = ? WHERE item_id = ?";
+               String sql = "UPDATE items SET current_bid = ?, leading_bidder_id = ?, is_sold = ? WHERE item_id = ?";
                try (PreparedStatement statement = connection.prepareStatement(sql)) {
                     statement.setDouble(1, bid.getBidAmount());
-                    statement.setBoolean(2, bid.getBidAmount() >= item.getStartPrice());
-                    statement.setString(3, item.getItemId().toString());
+                    statement.setString(2, bid.getBidder().getUserId());
+                    statement.setBoolean(3, bid.getBidAmount() >= item.getStartPrice());
+                    statement.setString(4, item.getItemId().toString());
                     statement.executeUpdate();
 
                     item.setCurrentBid((int) bid.getBidAmount());
@@ -264,6 +282,7 @@ public class ItemDao implements DaoInterface<Item> {
                     item.setIsSold(bid.getBidAmount() >= item.getStartPrice());
                }
           }
+          AuditService.logAction("Placed a bid");
      }
 
      public List<Bid> getBidsForItem(String itemId) throws SQLException {
@@ -276,6 +295,7 @@ public class ItemDao implements DaoInterface<Item> {
                     Bid bid = fetchBidFromResultSet(resultSet);
                     bids.add(bid);
                }
+               AuditService.logAction("Fetched bids for a certain item");
                return bids;
           }
      }
@@ -288,7 +308,10 @@ public class ItemDao implements DaoInterface<Item> {
                     highestBid = bid;
                }
           }
+          AuditService.logAction("Got the highest bid");
           return highestBid;
+
+
      }
 
      private Bid fetchBidFromResultSet(ResultSet resultSet) throws SQLException {
@@ -302,16 +325,20 @@ public class ItemDao implements DaoInterface<Item> {
 
           String itemId = resultSet.getString("item_id");
           Item item = read(itemId);
-
+          AuditService.logAction("Fetched a bid");
           return new Bid(bidAmount, bidder, item);
      }
 
      private RegularUser fetchUserFromDatabase(String userId) throws SQLException {
           UserDao userDao = new UserDao();
           User user = userDao.read(userId);
-          if (user instanceof RegularUser) {
+          if (user instanceof RegularUser)
+          {
+               AuditService.logAction("Fetched UserFromDatabase");
                return (RegularUser) user;
           }
+          AuditService.logAction("Fetched UserFromDatabase but it returned null");
           return null;
      }
+
 }

@@ -36,54 +36,68 @@ public class BidDao implements DaoInterface<Bid> {
             statement.setString(5, bid.getItem().getItemId().toString());
             statement.executeUpdate();
         }
+        AuditService.logAction("Added a Bid to database");
     }
 
     @Override
     public Bid read(String bidId) throws SQLException {
         String sql = "SELECT * FROM bids WHERE bid_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql))
+        {
             statement.setString(1, bidId);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            if (resultSet.next())
+            {
+                AuditService.logAction("Read a Bid from database");
                 return createBidFromResultSet(resultSet);
             }
         }
         return null;
     }
 
-    private Bid createBidFromResultSet(ResultSet resultSet) throws SQLException {
+    private Bid createBidFromResultSet(ResultSet resultSet) throws SQLException
+    {
         UUID bidId = UUID.fromString(resultSet.getString("bid_id"));
         double bidAmount = resultSet.getDouble("bid_amount");
         LocalDateTime bidTime = resultSet.getTimestamp("bid_time").toLocalDateTime();
         RegularUser bidder = fetchUserFromDatabase(resultSet.getString("bidder_id"));
         Item item = fetchItemFromDatabase(UUID.fromString(resultSet.getString("item_id")));
+        AuditService.logAction("Created bid");
         return new Bid(bidAmount, bidder, item);
     }
-    private RegularUser fetchUserFromDatabase(String userId) throws SQLException {
+    private RegularUser fetchUserFromDatabase(String userId) throws SQLException
+    {
         UserDao userDao = new UserDao();
         User user = userDao.read(userId);
-        if (user instanceof RegularUser) {
+        if (user instanceof RegularUser)
+        {
+            AuditService.logAction("Fetched user from database for bid");
             return (RegularUser) user;
         }
+        AuditService.logAction("Fetched user from database for bid but got null");
         return null;
     }
 
-    private Item fetchItemFromDatabase(UUID itemId) throws SQLException {
+    private Item fetchItemFromDatabase(UUID itemId) throws SQLException
+    {
         ItemDao itemDao = new ItemDao();
+        AuditService.logAction("Fetched item from database for Bid");
         return itemDao.read(itemId.toString());
     }
     @Override
     public void delete(Bid bid) throws SQLException {
         String sql = "DELETE FROM bids WHERE bid_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql))
+        {
             statement.setString(1, bid.getBidId().toString());
             statement.executeUpdate();
         }
+        AuditService.logAction("Deleted bid from database");
     }
 
     @Override
-    public void update(Bid bid) throws SQLException {
-        // Not necessary for the Bid entity
+    public void update(Bid bid) throws SQLException
+    {
     }
 
     public List<Bid> getBidsByItem(String itemId) throws SQLException {
@@ -106,6 +120,7 @@ public class BidDao implements DaoInterface<Bid> {
         RegularUser bidder = fetchUserFromDatabase(resultSet.getString("bidder_id"));
         UUID itemId = UUID.fromString(resultSet.getString("item_id"));
         Item item = fetchItemFromDatabase(itemId);
+        AuditService.logAction("Fetched bid");
         return new Bid(bidAmount, bidder, item);
     }
 }

@@ -2,6 +2,10 @@ USE auction_db;
 
 describe table_name;
 
+ALTER TABLE items ADD COLUMN leading_bidder_id VARCHAR(255) NULL;
+
+ca sa am leading_bidder id, nu mai stau sa dau drop la tot
+
 ----------------------------------------------------
 
 CREATE TABLE categories (
@@ -36,6 +40,8 @@ CREATE TABLE items (
     is_sold BOOLEAN,
     seller_id VARCHAR(255),
     category_id VARCHAR(255),
+    item_type VARCHAR(20) NOT NULL,
+    leading_bidder_id VARCHAR(255) NULL,
     FOREIGN KEY (seller_id) REFERENCES users(user_id),
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
