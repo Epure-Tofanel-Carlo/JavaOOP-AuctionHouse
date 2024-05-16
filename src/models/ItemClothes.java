@@ -14,8 +14,13 @@ public class ItemClothes implements Item
     private  long bidEndTime;
     private  String categoryId;
     private boolean isSold;
+    private String brand;
+    private String size;
+    private String color;
+    private String material;
+    private String condition;
+    private String sex;
 
-    // nevoie de field uri specifice gen Brand, Size, Material, Condition, Sex
 
 
     public ItemClothes()
@@ -23,7 +28,7 @@ public class ItemClothes implements Item
         this.itemId = UUID.randomUUID();
     }
 
-    public ItemClothes( String name, String description, int startPrice, int currentBid, RegularUser leadingBidder, RegularUser userSeller, long bidEndTime, String categoryId, boolean isSold)
+    public ItemClothes(String name, String description, int startPrice, int currentBid, RegularUser leadingBidder, RegularUser userSeller, long bidEndTime, String categoryId, boolean isSold, String brand, String size, String color, String material, String condition, String sex)
     {
         this.itemId = UUID.randomUUID();
         this.name = name;
@@ -35,6 +40,12 @@ public class ItemClothes implements Item
         this.bidEndTime = bidEndTime;
         this.categoryId = categoryId;
         this.isSold = isSold;
+        this.brand = brand;
+        this.size = size;
+        this.color = color;
+        this.material = material;
+        this.condition = condition;
+        this.sex = sex;
     }
 
     @Override
@@ -157,9 +168,58 @@ public class ItemClothes implements Item
         isSold = sold;
     }
 
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(String material) {
+        this.material = material;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
+    public String getSex()
+    {
+        return sex;
+    }
+    public void setSex(String sex)
+    {
+        this.sex = sex;
+    }
+
     @Override
     public String toString() {
-        return "ItemArtCollectibles {" +
+        return "ItemClothes {" +
                 "itemId=" + itemId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
@@ -170,6 +230,12 @@ public class ItemClothes implements Item
                 ", bidEndTime=" + bidEndTime +
                 ", categoryId='" + categoryId + '\'' +
                 ", isSold=" + isSold +
+                ", brand='" + brand + '\'' +
+                ", size='" + size + '\'' +
+                ", color='" + color + '\'' +
+                ", material='" + material + '\'' +
+                ", condition='" + condition + '\'' +
+                ", sex='" + sex + '\'' +
                 '}';
     }
 }

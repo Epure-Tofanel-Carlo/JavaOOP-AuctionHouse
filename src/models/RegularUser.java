@@ -93,6 +93,10 @@ public class RegularUser implements User
         this.balance = balance;
     }
     public void addBid(Bid bid) {
+
+        if (bids == null) {
+            bids = new ArrayList<>();
+        }
         bids.add(bid);
     }
 

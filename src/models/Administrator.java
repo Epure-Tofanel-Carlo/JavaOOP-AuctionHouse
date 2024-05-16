@@ -61,5 +61,15 @@ public class Administrator implements User
         this.userPassword = userPassword;
     }
 
+    @Override
+    public String toString() {
+        return "Administrator{" +
+                "userId='" + userId + '\'' +
+                ", email='" + email + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userPassword='" + userPassword + '\'' +
+                '}';
+    }
+
 
 }

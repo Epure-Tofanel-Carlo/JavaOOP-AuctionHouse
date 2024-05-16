@@ -1,4 +1,6 @@
 import menu.MenuAdministrator;
+import menu.MenuUser;
+
 import java.util.Scanner;
 
 public class Application
@@ -7,7 +9,8 @@ public class Application
     {
 
         Scanner scanner = new Scanner(System.in);
-
         MenuAdministrator.menuAdministrator(scanner);
+        MenuUser.menuUser(scanner);
+
     }
 }

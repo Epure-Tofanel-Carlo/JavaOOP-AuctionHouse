@@ -1,0 +1,81 @@
+USE auction_db;
+
+describe table_name;
+
+----------------------------------------------------
+
+CREATE TABLE categories (
+    category_id VARCHAR(255) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT
+);
+
+
+CREATE TABLE users (
+    user_id VARCHAR(255) PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    user_type VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE regular_users (
+    user_id VARCHAR(255) PRIMARY KEY,
+    credit_card VARCHAR(255),
+    balance DECIMAL(10, 2),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE items (
+    item_id VARCHAR(255) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    start_price DECIMAL(10, 2) NOT NULL,
+    current_bid DECIMAL(10, 2),
+    bid_end_time TIMESTAMP,
+    is_sold BOOLEAN,
+    seller_id VARCHAR(255),
+    category_id VARCHAR(255),
+    FOREIGN KEY (seller_id) REFERENCES users(user_id),
+    FOREIGN KEY (category_id) REFERENCES categories(category_id)
+);
+
+CREATE TABLE item_art_collectibles (
+    item_id VARCHAR(255) PRIMARY KEY,
+    artist VARCHAR(255),
+    medium VARCHAR(255),
+    dimensions VARCHAR(255),
+    year INT,
+    FOREIGN KEY (item_id) REFERENCES items(item_id)
+);
+
+CREATE TABLE item_clothes (
+    item_id VARCHAR(255) PRIMARY KEY,
+    brand VARCHAR(255),
+    size VARCHAR(50),
+    color VARCHAR(100),
+    material VARCHAR(100),
+    `condition` VARCHAR(100),
+    sex VARCHAR(20),
+    FOREIGN KEY (item_id) REFERENCES items(item_id)
+);
+
+CREATE TABLE item_electronics (
+    item_id VARCHAR(255) PRIMARY KEY,
+    brand VARCHAR(255),
+    model VARCHAR(255),
+    specifications TEXT,
+    `condition` VARCHAR(100),
+    manufacture_year INT,
+    FOREIGN KEY (item_id) REFERENCES items(item_id)
+);
+
+CREATE TABLE bids (
+    bid_id VARCHAR(255) PRIMARY KEY,
+    bid_amount DECIMAL(10, 2) NOT NULL,
+    bid_time TIMESTAMP NOT NULL,
+    bidder_id VARCHAR(255) NOT NULL,
+    item_id VARCHAR(255) NOT NULL,
+    FOREIGN KEY (bidder_id) REFERENCES users(user_id),
+    FOREIGN KEY (item_id) REFERENCES items(item_id)
+);

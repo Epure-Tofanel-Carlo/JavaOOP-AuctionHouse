@@ -2,16 +2,16 @@ package models;
 
 public interface User
 {
-    public String getUserId();
-    public String getEmail();
-    public String getUserName();
-    public String getUserPassword();
+     String getUserId();
+    String getEmail();
+    String getUserName();
+     String getUserPassword();
 
 
-    public void setUserId(String userId);
-    public void setEmail(String email);
-    public void setUserName(String userName);
-    public void setUserPassword(String userPassword);
+    void setUserId(String userId);
+   void setEmail(String email);
+    void setUserName(String userName);
+  void setUserPassword(String userPassword);
 
 
 

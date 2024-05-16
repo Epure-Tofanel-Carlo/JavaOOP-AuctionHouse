@@ -2,20 +2,21 @@ package models;
 
 import java.util.UUID;
 
-public class ItemArtCollectibles implements Item
-{
+public class ItemArtCollectibles implements Item {
     private UUID itemId;
-    private  String name;
-    private  String description;
-    private  int startPrice;
-    private  int currentBid;
-    private  RegularUser leadingBidder;
-    private  RegularUser userSeller;
-    private  long bidEndTime;
-    private  String categoryId;
+    private String name;
+    private String description;
+    private int startPrice;
+    private int currentBid;
+    private RegularUser leadingBidder;
+    private RegularUser userSeller;
+    private long bidEndTime;
+    private String categoryId;
     private boolean isSold;
-
-    // nevoie de fielduri specifice gen materials, tags, author
+    private String artist;
+    private String medium;
+    private String dimensions;
+    private int year;
 
 
     public ItemArtCollectibles()
@@ -23,7 +24,7 @@ public class ItemArtCollectibles implements Item
         this.itemId = UUID.randomUUID();
     }
 
-    public ItemArtCollectibles(String name, String description, int startPrice, int currentBid, RegularUser leadingBidder, RegularUser userSeller, long bidEndTime, String categoryId, boolean isSold)
+    public ItemArtCollectibles(String name, String description, int startPrice, int currentBid, RegularUser leadingBidder, RegularUser userSeller, long bidEndTime, String categoryId, boolean isSold, String artist, String medium, String dimensions, int year)
     {
         this.itemId = UUID.randomUUID();
         this.name = name;
@@ -35,6 +36,10 @@ public class ItemArtCollectibles implements Item
         this.bidEndTime = bidEndTime;
         this.categoryId = categoryId;
         this.isSold = isSold;
+        this.artist = artist;
+        this.medium = medium;
+        this.dimensions = dimensions;
+        this.year = year;
     }
 
     @Override
@@ -157,6 +162,38 @@ public class ItemArtCollectibles implements Item
         isSold = sold;
     }
 
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public String getMedium() {
+        return medium;
+    }
+
+    public void setMedium(String medium) {
+        this.medium = medium;
+    }
+
+    public String getDimensions() {
+        return dimensions;
+    }
+
+    public void setDimensions(String dimensions) {
+        this.dimensions = dimensions;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
     @Override
     public String toString() {
         return "ItemArtCollectibles {" +
@@ -170,6 +207,10 @@ public class ItemArtCollectibles implements Item
                 ", bidEndTime=" + bidEndTime +
                 ", categoryId='" + categoryId + '\'' +
                 ", isSold=" + isSold +
+                ", artist='" + artist + '\'' +
+                ", medium='" + medium + '\'' +
+                ", dimensions='" + dimensions + '\'' +
+                ", year=" + year +
                 '}';
     }
 }

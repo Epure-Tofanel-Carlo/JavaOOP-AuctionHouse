@@ -14,16 +14,18 @@ public class ItemElectronic implements Item
     private  long bidEndTime;
     private  String categoryId;
     private boolean isSold;
-
-    // nevoie de fielduri specifice gen Model, Producer, etc
-
+    private String brand;
+    private String model;
+    private String specifications;
+    private String condition;
+    private int manufactureYear;
 
     public ItemElectronic()
     {
         this.itemId = UUID.randomUUID();
     }
 
-    public ItemElectronic(String name, String description, int startPrice, int currentBid, RegularUser leadingBidder, RegularUser userSeller, long bidEndTime, String categoryId, boolean isSold)
+    public ItemElectronic(String name, String description, int startPrice, int currentBid, RegularUser leadingBidder, RegularUser userSeller, long bidEndTime, String categoryId, boolean isSold, String brand, String model, String specifications, String condition, int manufactureYear)
     {
         this.itemId = UUID.randomUUID();
         this.name = name;
@@ -35,6 +37,11 @@ public class ItemElectronic implements Item
         this.bidEndTime = bidEndTime;
         this.categoryId = categoryId;
         this.isSold = isSold;
+        this.brand = brand;
+        this.model = model;
+        this.specifications = specifications;
+        this.condition = condition;
+        this.manufactureYear = manufactureYear;
     }
 
     @Override
@@ -157,9 +164,49 @@ public class ItemElectronic implements Item
         isSold = sold;
     }
 
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getSpecifications() {
+        return specifications;
+    }
+
+    public void setSpecifications(String specifications) {
+        this.specifications = specifications;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
+    public int getManufactureYear() {
+        return manufactureYear;
+    }
+
+    public void setManufactureYear(int manufactureYear) {
+        this.manufactureYear = manufactureYear;
+    }
+
     @Override
     public String toString() {
-        return "ItemArtCollectibles {" +
+        return "ItemElectronic {" +
                 "itemId=" + itemId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
@@ -170,6 +217,11 @@ public class ItemElectronic implements Item
                 ", bidEndTime=" + bidEndTime +
                 ", categoryId='" + categoryId + '\'' +
                 ", isSold=" + isSold +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", specifications='" + specifications + '\'' +
+                ", condition='" + condition + '\'' +
+                ", manufactureYear=" + manufactureYear +
                 '}';
     }
 }
