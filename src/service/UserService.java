@@ -164,15 +164,18 @@ public class UserService {
         return currentUser;
     }
 
-    public void addBalance(String userId, double amount) throws SQLException {
+    public void addBalance(String userId, double amount) throws SQLException
+    {
         User user = userRepositoryService.readUserById(userId);
-        if (user instanceof RegularUser) {
+        if (user instanceof RegularUser)
+        {
             RegularUser regularUser = (RegularUser) user;
             double newBalance = regularUser.getBalance() + amount;
             regularUser.setBalance((int) newBalance);
             userRepositoryService.updateUser(regularUser);
             System.out.println("Balance updated successfully. New balance: " + newBalance);
-        } else {
+        } else
+        {
             System.out.println("Invalid user type. Cannot add balance.");
         }
     }

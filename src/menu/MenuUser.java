@@ -32,7 +32,8 @@ public class MenuUser {
                     "\n4) Place Bid" +
                     "\n5) View My Bids" +
                     "\n6) View All Items" +
-                    "\n7) Exit");
+                    "\n7) Add Balance" +
+                    "\n8) Exit");
             String choice = scanner.nextLine();
             switch (choice) {
                 case "1":
@@ -60,8 +61,11 @@ public class MenuUser {
                 case "6":
                     itemService.viewAllItems();
                     break;
-                case "7":
+                case "8":
                     return;
+                case "7":
+                    addBalance(scanner);
+                    break;
                 default:
                     System.out.println("Invalid option, please try again");
             }
